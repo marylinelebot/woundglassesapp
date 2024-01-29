@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.database;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -63,11 +62,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             //Table user
             db.execSQL("CREATE TABLE " + TABLE_USER + "(" +
-                    COL_EMAIL + " TEXT PRIMARY KEY," +
+                    COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COL_NAME + " TEXT, " +
                     COL_SURNAME + " TEXT, " +
                     COL_GROUPID + " INTEGER," +
                     COL_ROLEID +" INTEGER,"+
+                    COL_EMAIL +" TEXT," +
                     COL_PWD + " TEXT, " +
                     COL_STATUSID + " INTEGER, " +
                     COL_SERIALNUMBER + " TEXT," +
@@ -89,21 +89,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COL_ROLETITLE + " TEXT " +
                     ");");
-            // Inserting values into role_user table
-            db.execSQL("INSERT INTO " + TABLE_ROLEUSER + " (" + COL_ROLETITLE + ") VALUES ('User')");
-            db.execSQL("INSERT INTO " + TABLE_ROLEUSER + " (" + COL_ROLETITLE + ") VALUES ('Administrator')");
-
 
             //Table status_user
             db.execSQL("CREATE TABLE " + TABLE_STATUSUSER + "(" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COL_STATUSTITLE + " TEXT " +
                     ");");
-            // Inserting values into status_user table
-            db.execSQL("INSERT INTO " + TABLE_STATUSUSER + " (" + COL_STATUSTITLE + ") VALUES ('Active')");
-            db.execSQL("INSERT INTO " + TABLE_STATUSUSER + " (" + COL_STATUSTITLE + ") VALUES ('Non-Active')");
-            db.execSQL("INSERT INTO " + TABLE_STATUSUSER + " (" + COL_STATUSTITLE + ") VALUES ('Suspended')");
-
 
             // Table documents
             db.execSQL("CREATE TABLE " + TABLE_DOCUMENTS + "(" +
@@ -118,10 +109,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COL_GROUPTYPE +  " TEXT " +
                     ");");
-            // Inserting values into group_type table
-            db.execSQL("INSERT INTO " + TABLE_GROUPTYPE + " (" + COL_GROUPTYPE + ") VALUES ('Individual group')");
-            db.execSQL("INSERT INTO " + TABLE_GROUPTYPE + " (" + COL_GROUPTYPE + ") VALUES ('Non-individual group')");
-
 
             //Table contacts
             db.execSQL("CREATE TABLE " + TABLE_CONTACTS + "(" +
@@ -182,29 +169,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return count > 0;
-    }
-
-    @SuppressLint("Range")
-    public User getUserbyEmail(String email) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_USER, new String[]{COL_SURNAME, COL_NAME, COL_GROUPID, COL_ROLEID, COL_EMAIL, COL_PWD, COL_STATUSID, COL_SERIALNUMBER},
-                COL_EMAIL + "=?", new String[]{email}, null, null, null, null);
-
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        User user = new User(cursor.getString(cursor.getColumnIndex(COL_SURNAME)),
-                cursor.getString(cursor.getColumnIndex(COL_NAME)),
-                cursor.getInt(cursor.getColumnIndex(COL_GROUPID)),
-                cursor.getInt(cursor.getColumnIndex(COL_ROLEID)),
-                cursor.getString(cursor.getColumnIndex(COL_EMAIL)),
-                cursor.getString(cursor.getColumnIndex(COL_PWD)),
-                cursor.getInt(cursor.getColumnIndex(COL_STATUSID)),
-                cursor.getString(cursor.getColumnIndex(COL_SERIALNUMBER)));
-
-
-        cursor.close();
-        return user;
     }
 }
