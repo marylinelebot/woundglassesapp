@@ -51,7 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Please complete all the fields", Toast.LENGTH_SHORT).show();
                 } else {
                     // Create a user in the database
-                    User userId = new User(surname, name, email, password);
+                    User userId = new User(surname, name, 0, 0, email, password, 2, null);
                     databaseHelper.insertUser(userId);
 
                     // Verify is the account is created in the database

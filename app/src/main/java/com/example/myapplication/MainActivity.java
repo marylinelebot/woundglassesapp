@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean areButtonsUp = false;
     private TextView textViewEmail, textViewName;
     private DatabaseHelper dbHelper;
-
+    private User user;
 
 
     @Override
@@ -72,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (sessionManager.isLoggedIn()) {
             String userEmail = sessionManager.getUserEmail();
-            User user = dbHelper.getUserbyEmail(userEmail);
+            user = dbHelper.getUserbyEmail(userEmail);
+            user.setStatusId(1);
 
             String userSurname = user.getSurname();
             String userName = user.getName();
-
+            int statusId = user.getId();
+            System.out.println(statusId);
             Log.d("Session", "User connected");
             buttonLogIn.setVisibility(View.INVISIBLE);
             buttonLogOut.setVisibility(View.VISIBLE);
@@ -152,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                user.setStatusId(2);
                 sessionManager.setLoggedIn(false);
                 //Redirect the user to the main activity
                 startActivity(new Intent(MainActivity.this, MainActivity.class));

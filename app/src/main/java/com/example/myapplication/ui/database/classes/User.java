@@ -13,8 +13,7 @@ public class User {
 
 
     // Constructor, getters et setters
-    public User(int id, String name, String surname, int groupId, int roleId, String email, String pwd, int statusId, String serialNumber) {
-        this.id = id;
+    public User(String name, String surname, int groupId, int roleId, String email, String pwd, int statusId, String serialNumber) {
         this.name = name;
         this.surname = surname;
         this.groupId = groupId;
