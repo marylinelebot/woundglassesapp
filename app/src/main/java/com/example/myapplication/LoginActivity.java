@@ -44,9 +44,10 @@ public class LoginActivity extends AppCompatActivity {
                     // Success of the connection
                     Toast.makeText(LoginActivity.this, "Success of the connection", Toast.LENGTH_SHORT).show();
                     sessionManager.setLoggedIn(true);
-                    //Redirect user to the main activity
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                    sessionManager.setUserEmail(email);
 
+                    // Redirect to MainActivity
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
                 } else {
 
                     // Connection failed
