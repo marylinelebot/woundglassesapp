@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.database;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -169,5 +170,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return count > 0;
+    }
+
+    @SuppressLint("Range")
+    public User getUserbyEmail(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_USER, new String[]{COL_SURNAME, COL_NAME, COL_EMAIL, COL_PWD},
+                COL_EMAIL + "=?", new String[]{email}, null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        User user = new User();
+        user.setName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
+        user.setSurname(cursor.getString(cursor.getColumnIndex(COL_SURNAME)));
+        user.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
+
+        cursor.close();
+        return user;
     }
 }
