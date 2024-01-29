@@ -12,6 +12,7 @@ public class User {
     private String serialNumber;
 
 
+
     // Constructor, getters et setters
     public User(String name, String surname, int groupId, int roleId, String email, String pwd, int statusId, String serialNumber) {
         this.name = name;
