@@ -2,12 +2,15 @@ package com.example.myapplication;
 
 import static android.view.View.OnClickListener;
 
+import static java.sql.DriverManager.println;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -17,9 +20,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.myapplication.databinding.ActivityMainBinding;
+import com.example.myapplication.ui.database.DatabaseHelper;
+import com.example.myapplication.ui.database.classes.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private Button buttonLogIn, buttonLogOut;
     private boolean isRotated = false;
     private boolean areButtonsUp = false;
+    private TextView textViewEmail, textViewName;
+    private DatabaseHelper dbHelper;
 
 
 
@@ -40,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         setSupportActionBar(binding.appBarMain.toolbar);
+
         //CoordinatorLayout stackedButtonsContainer = findViewById(R.id.stackedButtonsContainer);
         fab = findViewById(R.id.fab);
         fab1 = findViewById(R.id.fab1);
@@ -48,19 +57,45 @@ public class MainActivity extends AppCompatActivity {
         buttonLogIn = findViewById(R.id.button_login);
         buttonLogOut = findViewById(R.id.button_logout);
 
+        // Find the NavigationView
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        // Get the header view of the NavigationView
+        View headerView = navigationView.getHeaderView(0);
+        // Find the TextView within the header view
+        textViewEmail = headerView.findViewById(R.id.textViewEmail);
+        textViewName = headerView.findViewById(R.id.textViewName);
+
+        dbHelper = new DatabaseHelper(this);
 
         //check if  user is connected
         SessionManager sessionManager = new SessionManager(this);
 
         if (sessionManager.isLoggedIn()) {
+            String userEmail = sessionManager.getUserEmail();
+            User user = dbHelper.getUserbyEmail(userEmail);
+
+            String userSurname = user.getSurname();
+            String userName = user.getName();
+
             Log.d("Session", "User connected");
             buttonLogIn.setVisibility(View.INVISIBLE);
             buttonLogOut.setVisibility(View.VISIBLE);
+
+            // Changing the data type from String to CharSequence to match the setText() function
+            CharSequence charSequenceEmail = userEmail.subSequence(0, userEmail.length());
+            CharSequence charSequenceName = userName.subSequence(0, userName.length());
+            CharSequence charSequenceSurname = userSurname.subSequence(0, userSurname.length());
+
+            if (charSequenceEmail != null) {
+                textViewEmail.setText(charSequenceEmail);
+                textViewName.setText(charSequenceName + " " + charSequenceSurname);
+            }
         } else {
             Log.d("Session", "User not connected");
             buttonLogIn.setVisibility(View.VISIBLE);
             buttonLogOut.setVisibility(View.INVISIBLE);
         }
+
 
         //Rotating menu button
         binding.appBarMain.fab.setOnClickListener(new OnClickListener() {
@@ -126,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Menu
         DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
+        //NavigationView navigationView = binding.navView;
         // Menu navMenu = navigationView.getMenu();
 
         // Passing each menu ID as a set of Ids because each
@@ -165,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
     private void moveButton(View button, float translationX, float translationY) {
         button.animate().translationX(translationX).translationY(translationY).setDuration(500).start();
     }
-
 
 
 
