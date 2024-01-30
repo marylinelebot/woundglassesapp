@@ -10,7 +10,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_users">Users</string>
+    <string name="menu_users">Contacts</string>
     <string name="menu_groups">Groups</string>
     <string name="button_login_text">Login</string>
     <string name="button_logout_text">Logout</string>

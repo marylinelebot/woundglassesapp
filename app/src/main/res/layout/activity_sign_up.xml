@@ -47,7 +47,7 @@
         android:id="@+id/buttonSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Créer un compte"
+        android:text="Create an account"
         android:layout_below="@id/editTextPassword"
         android:layout_marginTop="16dp"/>
 
