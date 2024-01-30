@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.database;
 
+import static java.sql.DriverManager.println;
+
 import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,6 +12,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.example.myapplication.ui.database.classes.User;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "myapp2.db";
@@ -63,12 +68,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             //Table user
             db.execSQL("CREATE TABLE " + TABLE_USER + "(" +
-                    COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COL_NAME + " TEXT, " +
                     COL_SURNAME + " TEXT, " +
                     COL_GROUPID + " INTEGER," +
                     COL_ROLEID +" INTEGER,"+
-                    COL_EMAIL +" TEXT," +
+                    COL_EMAIL +" TEXT PRIMARY KEY," +
                     COL_PWD + " TEXT, " +
                     COL_STATUSID + " INTEGER, " +
                     COL_SERIALNUMBER + " TEXT," +
@@ -90,12 +94,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COL_ROLETITLE + " TEXT " +
                     ");");
+            // Inserting values into role_user table
+            db.execSQL("INSERT INTO " + TABLE_ROLEUSER + " (" + COL_ROLETITLE + ") VALUES ('User')");
+            db.execSQL("INSERT INTO " + TABLE_ROLEUSER + " (" + COL_ROLETITLE + ") VALUES ('Administrator')");
+
 
             //Table status_user
             db.execSQL("CREATE TABLE " + TABLE_STATUSUSER + "(" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COL_STATUSTITLE + " TEXT " +
                     ");");
+            // Inserting values into status_user table
+            db.execSQL("INSERT INTO " + TABLE_STATUSUSER + " (" + COL_STATUSTITLE + ") VALUES ('Active')");
+            db.execSQL("INSERT INTO " + TABLE_STATUSUSER + " (" + COL_STATUSTITLE + ") VALUES ('Non-Active')");
+            db.execSQL("INSERT INTO " + TABLE_STATUSUSER + " (" + COL_STATUSTITLE + ") VALUES ('Suspended')");
 
             // Table documents
             db.execSQL("CREATE TABLE " + TABLE_DOCUMENTS + "(" +
@@ -110,14 +122,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COL_GROUPTYPE +  " TEXT " +
                     ");");
+            // Inserting values into group_type table
+            db.execSQL("INSERT INTO " + TABLE_GROUPTYPE + " (" + COL_GROUPTYPE + ") VALUES ('Individual group')");
+            db.execSQL("INSERT INTO " + TABLE_GROUPTYPE + " (" + COL_GROUPTYPE + ") VALUES ('Non-individual group')");
 
             //Table contacts
             db.execSQL("CREATE TABLE " + TABLE_CONTACTS + "(" +
-                    COL_USER1 + " INTEGER, " +
-                    COL_USER2 + " INTEGER, " +
+                    COL_USER1 + " TEXT, " +
+                    COL_USER2 + " TEXT, " +
                     "UNIQUE (" + COL_USER1 + "," + COL_USER2 + ")," +
-                    "FOREIGN KEY (" + COL_USER1 + ") REFERENCES " + TABLE_USER + "(" + COL_ID + ")," +
-                    "FOREIGN KEY (" + COL_USER2 + ") REFERENCES " + TABLE_USER + "(" + COL_ID + ")" +
+                    "FOREIGN KEY (" + COL_USER1 + ") REFERENCES " + TABLE_USER + "(" + COL_EMAIL + ")," +
+                    "FOREIGN KEY (" + COL_USER2 + ") REFERENCES " + TABLE_USER + "(" + COL_EMAIL + ")" +
                     ");");
 
 
@@ -130,7 +145,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Methods to manipulate objects ( insertUser, insertGroup, etc.)
-
     public long insertUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -149,7 +163,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return newRowId;
     }
 
+    // Add a contact
+    public long addContact(String user1, String user2) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        ContentValues values = new ContentValues();
+        if (!Objects.equals(user1, user2)){
+            values.put(COL_USER1, user1);
+            values.put(COL_USER2, user2);
+
+            long newRowId = db.insert(TABLE_CONTACTS, null, values);
+            Log.d("DatabaseHelper", "New contact with ID: " + newRowId);
+            return newRowId;
+        }else {
+            Log.d("DatabaseHelper", "Error in adding contact");
+            return 0;
+        }
+    }
+
+
+    // Upgrade the database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Update database if needed
@@ -172,6 +205,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
+    // Find a user in the database with his email
     @SuppressLint("Range")
     public User getUserbyEmail(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
@@ -185,9 +219,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         User user = new User();
         user.setName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
         user.setSurname(cursor.getString(cursor.getColumnIndex(COL_SURNAME)));
+        user.setGroupId(cursor.getInt(cursor.getColumnIndex(COL_GROUPID)));
+        user.setRoleId(cursor.getInt(cursor.getColumnIndex(COL_ROLEID)));
         user.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
+        user.setPwd(cursor.getString(cursor.getColumnIndex(COL_PWD)));
+        user.setStatusId(cursor.getInt(cursor.getColumnIndex(COL_STATUSID)));
+        user.setSerialNumber(cursor.getString(cursor.getColumnIndex(COL_SERIALNUMBER)));
 
         cursor.close();
         return user;
     }
+
+    // Search all user in the database with their email
+    // Used in the ContactActivity while writing
+    public ArrayList<String> searchUsers(String query) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Perform a database query to search for users
+        ArrayList<String> searchResults = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT " + COL_EMAIL + " FROM " + TABLE_USER +
+                " WHERE " + COL_EMAIL + " LIKE '%" + query + "%'", null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String user = cursor.getString(0);
+                searchResults.add(user);
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return searchResults;
+    }
+
 }
+

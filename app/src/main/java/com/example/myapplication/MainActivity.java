@@ -2,8 +2,6 @@ package com.example.myapplication;
 
 import static android.view.View.OnClickListener;
 
-import static java.sql.DriverManager.println;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +23,6 @@ import com.example.myapplication.ui.database.classes.User;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.example.myapplication.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(binding.appBarMain.toolbar);
 
-        //CoordinatorLayout stackedButtonsContainer = findViewById(R.id.stackedButtonsContainer);
         fab = findViewById(R.id.fab);
         fab1 = findViewById(R.id.fab1);
         fab2 = findViewById(R.id.fab2);
@@ -77,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
             String userSurname = user.getSurname();
             String userName = user.getName();
-            int statusId = user.getId();
-            System.out.println(statusId);
+
             Log.d("Session", "User connected");
             buttonLogIn.setVisibility(View.INVISIBLE);
             buttonLogOut.setVisibility(View.VISIBLE);
@@ -90,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (charSequenceEmail != null) {
                 textViewEmail.setText(charSequenceEmail);
-                textViewName.setText(charSequenceName + " " + charSequenceSurname);
+                textViewName.setText(charSequenceSurname + " " + charSequenceName);
             }
         } else {
             Log.d("Session", "User not connected");
@@ -117,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab1.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Contact", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(MainActivity.this, ContactActivity.class));
             }
 
         });
@@ -164,8 +158,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Menu
         DrawerLayout drawer = binding.drawerLayout;
-        //NavigationView navigationView = binding.navView;
-        // Menu navMenu = navigationView.getMenu();
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
