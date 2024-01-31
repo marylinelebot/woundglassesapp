@@ -250,5 +250,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return searchResults;
     }
 
+    // Verify if the contact already exist or not
+    public boolean contactExists(String user1, String user2) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_CONTACTS + " WHERE (" + COL_USER1 + " = ? AND " + COL_USER2 + " = ?) OR (" + COL_USER2 + " = ? AND " + COL_USER1 + " = ?)";
+        Cursor cursor = db.rawQuery(query, new String[]{user1, user2, user1, user2});
+        boolean exists = cursor.moveToFirst();
+        cursor.close();
+        return exists;
+    }
+
+    // Method to modify user data in the database
+    public void modifyUserData(String name, String surname, String pwd, String serialnumber, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + TABLE_USER + " SET " + COL_NAME + " = ?, "+ COL_SURNAME + " = ?, " + COL_PWD + " = ?, "+ COL_SERIALNUMBER + " = ? WHERE " + COL_EMAIL + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{name, surname, pwd, serialnumber, email});
+        cursor.moveToFirst();
+        cursor.close();
+        db.close();
+    }
 }
 

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,32 +40,42 @@ public class ContactActivity extends AppCompatActivity {
         // Initialize database
         dbHelper = new DatabaseHelper(this);
 
-        // Set up search functionality
-        searchEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        if (sessionManager.isLoggedIn()){
+            // Set up search functionality
+            searchEditText.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                println(s.toString());
-                searchUser(s.toString());
-            }
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    println(s.toString());
+                    searchUser(s.toString());
+                }
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+        }
+
 
         // Set up list item click listener
         searchResultsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 String selectedUser = searchResults.get(position);
-                String user1 = sessionManager.getUserEmail();
-                dbHelper.addContact(user1, selectedUser);
-                startActivity(new Intent(ContactActivity.this, MainActivity.class));
+                String connectedUser = sessionManager.getUserEmail();
+
+                // Check if the contact already exists
+                if (dbHelper.contactExists(connectedUser, selectedUser)) {
+                    // Display error message indicating that the contact already exists
+                    Toast.makeText(ContactActivity.this, "Contact already exists", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Add the contact if it doesn't already exist
+                    dbHelper.addContact(connectedUser, selectedUser);
+                    startActivity(new Intent(ContactActivity.this, MainActivity.class));
+                }
             }
         });
     }

@@ -2,12 +2,15 @@ package com.example.myapplication;
 
 import static android.view.View.OnClickListener;
 
+import static java.sql.DriverManager.println;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isRotated = false;
     private boolean areButtonsUp = false;
     private TextView textViewEmail, textViewName;
+    private ImageView edit;
     private DatabaseHelper dbHelper;
     private User user;
 
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         // Find the TextView within the header view
         textViewEmail = headerView.findViewById(R.id.textViewEmail);
         textViewName = headerView.findViewById(R.id.textViewName);
+        edit = headerView.findViewById(R.id.editView);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -87,6 +92,16 @@ public class MainActivity extends AppCompatActivity {
                 textViewEmail.setText(charSequenceEmail);
                 textViewName.setText(charSequenceSurname + " " + charSequenceName);
             }
+
+            // If edit button clicked, go to EditUserActivity
+            edit.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(MainActivity.this, EditUserActivity.class));
+                }
+            });
+
+
         } else {
             Log.d("Session", "User not connected");
             buttonLogIn.setVisibility(View.VISIBLE);

@@ -1,10 +1,11 @@
 package com.example.myapplication.ui.users;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.AdapterView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -35,16 +36,20 @@ public class UsersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         SessionManager sessionManager = new SessionManager(this.getActivity());
 
-        String userEmail = sessionManager.getUserEmail();
+        if (sessionManager.isLoggedIn()){
+            String userEmail = sessionManager.getUserEmail();
 
-        userDAO = new UserDAO(getActivity());
-        userDAO.open();
-        List<User> users = userDAO.getContacts(userEmail);
-        userDAO.close();
+            userDAO = new UserDAO(getActivity());
+            userDAO.open();
+            List<User> users = userDAO.getContacts(userEmail);
+            userDAO.close();
 
-        userAdapter = new UserAdapter(users);
-        recyclerView.setAdapter(userAdapter);
+            userAdapter = new UserAdapter(users);
+            recyclerView.setAdapter(userAdapter);
+        }
 
         return view;
     }
+
+
 }
