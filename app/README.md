@@ -25,3 +25,10 @@ Wounds management glasses application
 
     Go in the menu by clicking on the top left corner
     Click on Contacts
+
+6 - Modify your data
+
+    Go in the menu by clicking on the top left corner
+    Click on the pen below your mail
+    Update your data
+    Click on the "Save" button
