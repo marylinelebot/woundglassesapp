@@ -1,7 +1,5 @@
 package com.example.myapplication;
 
-import static java.sql.DriverManager.println;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.ui.database.DatabaseHelper;
 import com.example.myapplication.ui.database.classes.User;
-
 public class EditUserActivity extends AppCompatActivity {
 
     private EditText nameEditText, surnameEditText, emailEditText, passwordEditText, serialnumberEditText;

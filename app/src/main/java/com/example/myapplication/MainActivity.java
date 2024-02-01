@@ -2,8 +2,6 @@ package com.example.myapplication;
 
 import static android.view.View.OnClickListener;
 
-import static java.sql.DriverManager.println;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -136,8 +135,7 @@ public class MainActivity extends AppCompatActivity {
         binding.appBarMain.fab2.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Group", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                startActivity(new Intent(MainActivity.this, GroupActivity.class));
             }
 
         });

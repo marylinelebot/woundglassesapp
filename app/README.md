@@ -32,3 +32,15 @@ Wounds management glasses application
     Click on the pen below your mail
     Update your data
     Click on the "Save" button
+
+4 - Add a group
+
+    Click on the "+" button on the bottom right corner and the button with a group of person
+    Tip the name of the group you want to add
+    Select the "Individual group" option if needed
+    Click on the create button
+
+5 - See your list of contacts
+
+    Go in the menu by clicking on the top left corner
+    Click on Groups

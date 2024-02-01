@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.ui.database.DatabaseHelper;
+import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -42,7 +43,9 @@ public class LoginActivity extends AppCompatActivity {
                 // check if the user is in the database
                 if (databaseHelper.checkUser(email, password)) {
                     // Success of the connection
-                    Toast.makeText(LoginActivity.this, "Success of the connection", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Success of the connection", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    //Toast.makeText(LoginActivity.this, "Success of the connection", Toast.LENGTH_SHORT).show();
                     sessionManager.setLoggedIn(true);
                     sessionManager.setUserEmail(email);
 
@@ -51,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 
                     // Connection failed
-                    Toast.makeText(LoginActivity.this, "Connection failed.", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Connection failed.", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
             }
         });

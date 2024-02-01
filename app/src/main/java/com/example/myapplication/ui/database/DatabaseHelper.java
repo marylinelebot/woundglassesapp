@@ -11,14 +11,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.myapplication.ui.database.classes.Group;
 import com.example.myapplication.ui.database.classes.User;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "myapp2.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final String DATABASE_NAME = "mydatabase.db";
+    private static final int DATABASE_VERSION = 1;
 
     public static final String TABLE_USER = "user";
     public static final String COL_ID = "id";
@@ -55,6 +56,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_USER2 = "user2";
 
 
+    public static final String TABLE_GROUPUSER = "group_user";
+
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -85,7 +88,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE " + TABLE_GROUPS + "(" +
                     COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     COL_NAME + " TEXT, " +
+                    COL_EMAIL + " TEXT, " +
                     COL_TYPEID + " INTEGER, " +
+                    "FOREIGN KEY (" + COL_EMAIL + ") REFERENCES user(" + COL_EMAIL + ")," +
                     "FOREIGN KEY (" + COL_TYPEID + ") REFERENCES group_type(" + COL_ID + ")" +
                     ");");
 
@@ -135,6 +140,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY (" + COL_USER2 + ") REFERENCES " + TABLE_USER + "(" + COL_EMAIL + ")" +
                     ");");
 
+            //Table group_user
+            db.execSQL("CREATE TABLE " + TABLE_GROUPUSER + "(" +
+                    COL_EMAIL + " TEXT, " +
+                    COL_GROUPID + " INTEGER, " +
+                    "UNIQUE (" + COL_EMAIL + "," + COL_GROUPID + ")," +
+                    "FOREIGN KEY (" + COL_EMAIL + ") REFERENCES " + TABLE_USER + "(" + COL_EMAIL + ")," +
+                    "FOREIGN KEY (" + COL_GROUPID + ") REFERENCES " + TABLE_GROUPS + "(" + COL_ID + ")" +
+                    ");");
+
 
             Log.e("DatabaseHelper", "Success to create TABLES");
 
@@ -145,6 +159,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     // Methods to manipulate objects ( insertUser, insertGroup, etc.)
+
+    // Insert a user in the database
     public long insertUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -159,6 +175,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_SERIALNUMBER, user.getSerialNumber());
 
         long newRowId = db.insert(TABLE_USER, null, values);
+        Log.d("DatabaseHelper", "New line with ID: " + newRowId);
+        return newRowId;
+    }
+
+    // Insert a group in the database
+    public long insertGroup(Group group) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_NAME, group.getName());
+        values.put(COL_EMAIL, group.getEmail());
+        values.put(COL_TYPEID, group.getTypeId());
+
+        long newRowId = db.insert(TABLE_GROUPS, null, values);
         Log.d("DatabaseHelper", "New line with ID: " + newRowId);
         return newRowId;
     }
@@ -193,7 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean checkUser(String email, String password) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] columns = {COL_ID};
+        String[] columns = {COL_EMAIL};
         String selection = COL_EMAIL + "=? AND " + COL_PWD + "=?";
         String[] selectionArgs = {email, password};
 
@@ -217,6 +247,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         User user = new User();
+        assert cursor != null;
         user.setName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
         user.setSurname(cursor.getString(cursor.getColumnIndex(COL_SURNAME)));
         user.setGroupId(cursor.getInt(cursor.getColumnIndex(COL_GROUPID)));
@@ -254,9 +285,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public boolean contactExists(String user1, String user2) {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + TABLE_CONTACTS + " WHERE (" + COL_USER1 + " = ? AND " + COL_USER2 + " = ?) OR (" + COL_USER2 + " = ? AND " + COL_USER1 + " = ?)";
-        Cursor cursor = db.rawQuery(query, new String[]{user1, user2, user1, user2});
-        boolean exists = cursor.moveToFirst();
-        cursor.close();
+        Cursor cursor = null;
+        boolean exists = false;
+        try {
+            cursor = db.rawQuery(query, new String[]{user1, user2, user1, user2});
+            if (cursor != null && cursor.getCount() > 0) {
+                exists = cursor.moveToFirst();
+            }
+        } catch (Exception e) {
+            Log.e("TAG", "Error checking if contact exists: " + e.getMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
         return exists;
     }
 
@@ -268,6 +310,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         cursor.close();
         db.close();
+    }
+
+    // Find a group in the database with his name
+    @SuppressLint("Range")
+    public Group getGroupbyName(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_GROUPS, new String[]{COL_NAME, COL_EMAIL, COL_TYPEID},
+                COL_NAME + "=?", new String[]{name}, null, null, null, null);
+
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Group group = new Group();
+        group.setName(cursor.getString(cursor.getColumnIndex(COL_NAME)));
+        group.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
+        group.setTypeId(cursor.getInt(cursor.getColumnIndex(COL_TYPEID)));
+
+        cursor.close();
+        return group;
+    }
+
+    // Find a group in the database with his name
+    @SuppressLint("Range")
+    public boolean doesGroupExist(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(TABLE_GROUPS, new String[]{COL_NAME},
+                COL_NAME + "=?", new String[]{name}, null, null, null, null);
+
+        boolean groupExists = cursor != null && cursor.getCount() > 0;
+
+        if (cursor != null)
+            cursor.close();
+
+        return groupExists;
     }
 }
 

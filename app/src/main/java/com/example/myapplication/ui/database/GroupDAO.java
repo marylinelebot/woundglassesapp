@@ -4,10 +4,12 @@ package com.example.myapplication.ui.database;
 
 
 
+import static com.example.myapplication.ui.database.DatabaseHelper.COL_NAME;
 import static com.example.myapplication.ui.database.DatabaseHelper.COL_USER1;
 import static com.example.myapplication.ui.database.DatabaseHelper.COL_USER2;
 import static com.example.myapplication.ui.database.DatabaseHelper.TABLE_CONTACTS;
 import static com.example.myapplication.ui.database.DatabaseHelper.COL_EMAIL;
+import static com.example.myapplication.ui.database.DatabaseHelper.TABLE_GROUPS;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,16 +17,17 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.example.myapplication.ui.database.DatabaseHelper;
+import com.example.myapplication.ui.database.classes.Group;
 import com.example.myapplication.ui.database.classes.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO {
+public class GroupDAO {
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
 
-    public UserDAO(Context context) {
+    public GroupDAO(Context context) {
         dbHelper = new DatabaseHelper(context);
     }
 
@@ -35,7 +38,7 @@ public class UserDAO {
     }
 
 
-    //Get all users
+    //Get all groups
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
         Cursor cursor = database.query(DatabaseHelper.TABLE_USER, null, null, null, null, null, null);
@@ -51,23 +54,22 @@ public class UserDAO {
     }
 
     // Find the contacts of a user in the database
-    public List<User> getContacts(String userEmail) {
-        List<User> contacts = new ArrayList<>();
+    public List<Group> getGroups(String userEmail) {
+        List<Group> groups = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // Define the columns you want to retrieve from the contacts table
         String[] projection = {
-                COL_USER1,
-                COL_USER2
+                COL_NAME
         };
 
         // Define the selection criteria to filter contacts for the specified user
-        String selection = COL_USER1 + " = ? OR " + COL_USER2 + " = ?";
-        String[] selectionArgs = { userEmail, userEmail };
+        String selection = COL_EMAIL + " = ?";
+        String[] selectionArgs = { userEmail};
 
         // Query the contacts table
         Cursor cursor = db.query(
-                TABLE_CONTACTS,
+                TABLE_GROUPS,
                 projection,
                 selection,
                 selectionArgs,
@@ -80,28 +82,18 @@ public class UserDAO {
         if (cursor != null) {
             try {
                 while (cursor.moveToNext()) {
-                    String user1 = cursor.getString(cursor.getColumnIndexOrThrow(COL_USER1));
-                    String user2 = cursor.getString(cursor.getColumnIndexOrThrow(COL_USER2));
+                    String groupname = cursor.getString(cursor.getColumnIndexOrThrow(COL_NAME));
+
                     // Assuming you have a method to fetch user details based on email
-                    if (!user1.equals(userEmail)) {
-                        User contact = dbHelper.getUserbyEmail(user1);
-                        if (contact != null) {
-                            contacts.add(contact);
-                        }
-                    }
-                    if (!user2.equals(userEmail)) {
-                        User contact = dbHelper.getUserbyEmail(user2);
-                        if (contact != null) {
-                            contacts.add(contact);
-                        }
-                    }
+                    Group group = dbHelper.getGroupbyName(groupname);
+                    groups.add(group);
                 }
             } finally {
                 cursor.close();
             }
         }
 
-        return contacts;
+        return groups;
     }
 
 
@@ -109,7 +101,7 @@ public class UserDAO {
     @SuppressLint("Range")
     private User cursorToUser(Cursor cursor) {
         User user = new User();
-        //user.setId(Math.toIntExact(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COL_ID))));
+        user.setId(Math.toIntExact(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COL_ID))));
         user.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_NAME)));
         user.setSurname(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_SURNAME)));
         user.setGroupId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_GROUPID)));

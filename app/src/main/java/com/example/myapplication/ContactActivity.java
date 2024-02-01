@@ -11,11 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.ui.database.DatabaseHelper;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class ContactActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ArrayList<String> searchResults;
     protected DatabaseHelper dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +68,12 @@ public class ContactActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedUser = searchResults.get(position);
                 String connectedUser = sessionManager.getUserEmail();
+                boolean exists = dbHelper.contactExists(connectedUser, selectedUser);
 
                 // Check if the contact already exists
-                if (dbHelper.contactExists(connectedUser, selectedUser)) {
-                    // Display error message indicating that the contact already exists
-                    Toast.makeText(ContactActivity.this, "Contact already exists", Toast.LENGTH_SHORT).show();
+                if (exists) {
+                    Snackbar.make(view, "This contact already exists", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 } else {
                     // Add the contact if it doesn't already exist
                     dbHelper.addContact(connectedUser, selectedUser);
