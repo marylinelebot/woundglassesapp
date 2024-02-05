@@ -8,6 +8,7 @@ public class SessionManager {
     private static final String PREF_NAME = "MyAppSession";
     private static final String KEY_IS_LOGGED_IN = "isLoggedOut";
     private static final String KEY_USER_EMAIL = "userEmail";
+    private static final String KEY_GROUP_NAME = "groupName";
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -39,5 +40,16 @@ public class SessionManager {
     // Verify if user is logged in
     public boolean isLoggedIn() {
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
+    // Stock group name
+    public void setGroupName(String name) {
+        editor.putString(KEY_GROUP_NAME, name);
+        editor.apply();
+    }
+
+    // Retrieve group name
+    public String getGroupName() {
+        return sharedPreferences.getString(KEY_GROUP_NAME, null);
     }
 }

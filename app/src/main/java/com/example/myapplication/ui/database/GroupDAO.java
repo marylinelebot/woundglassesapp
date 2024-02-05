@@ -1,27 +1,25 @@
 package com.example.myapplication.ui.database;
 
-/// UserDAO.java
+/// GroupDAO.java
 
-
-
-import static com.example.myapplication.ui.database.DatabaseHelper.COL_NAME;
-import static com.example.myapplication.ui.database.DatabaseHelper.COL_USER1;
-import static com.example.myapplication.ui.database.DatabaseHelper.COL_USER2;
-import static com.example.myapplication.ui.database.DatabaseHelper.TABLE_CONTACTS;
 import static com.example.myapplication.ui.database.DatabaseHelper.COL_EMAIL;
+import static com.example.myapplication.ui.database.DatabaseHelper.COL_GROUPID;
+import static com.example.myapplication.ui.database.DatabaseHelper.COL_NAME;
 import static com.example.myapplication.ui.database.DatabaseHelper.TABLE_GROUPS;
+import static com.example.myapplication.ui.database.DatabaseHelper.TABLE_GROUPUSER;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import com.example.myapplication.ui.database.DatabaseHelper;
+
 import com.example.myapplication.ui.database.classes.Group;
 import com.example.myapplication.ui.database.classes.User;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class GroupDAO {
     private SQLiteDatabase database;
@@ -39,21 +37,22 @@ public class GroupDAO {
 
 
     //Get all groups
-    public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
-        Cursor cursor = database.query(DatabaseHelper.TABLE_USER, null, null, null, null, null, null);
+    public List<Group> getGroups() {
+        List<Group> groups = new ArrayList<>();
+        Cursor cursor = database.query(TABLE_GROUPS, null, null, null, null, null, null);
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            User user = cursorToUser(cursor);
-            users.add(user);
+            Group group = cursorToGroup(cursor);
+            groups.add(group);
             cursor.moveToNext();
         }
         cursor.close();
-        return users;
+        return groups;
     }
 
-    // Find the contacts of a user in the database
+
+    // Find the groups of a user in the database
     public List<Group> getGroups(String userEmail) {
         List<Group> groups = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -97,19 +96,14 @@ public class GroupDAO {
     }
 
 
-    //Get one user, used in getUsers()
+    //Get one group, used in getGroups()
     @SuppressLint("Range")
-    private User cursorToUser(Cursor cursor) {
-        User user = new User();
-        user.setId(Math.toIntExact(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COL_ID))));
-        user.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_NAME)));
-        user.setSurname(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_SURNAME)));
-        user.setGroupId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_GROUPID)));
-        user.setRoleId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_ROLEID)));
-        user.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
-        user.setPwd(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_PWD)));
-        user.setStatusId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_STATUSID)));
-        user.setSerialNumber(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_SERIALNUMBER)));
-        return user;
+    private Group cursorToGroup(Cursor cursor) {
+        Group group = new Group();
+        group.setName(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_NAME)));
+        group.setEmail(cursor.getString(cursor.getColumnIndex(COL_EMAIL)));
+        group.setTypeId(cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COL_TYPEID)));
+        return group;
     }
+
 }

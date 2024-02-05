@@ -37,7 +37,6 @@ public class GroupActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
 
-
         editTextName = findViewById(R.id.editTextName);
         checkBox = findViewById(R.id.myCheckbox);
         buttonCreate = findViewById(R.id.buttonCreate);
@@ -46,13 +45,14 @@ public class GroupActivity extends AppCompatActivity {
 
         appBarText.setText("Create a group");
 
-        //Click listener fir the "Back" button
+        //Click listener for the "Back" button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(GroupActivity.this, MainActivity.class));
             }
         });
+
 
         Context context = this;
         String email = sessionManager.getUserEmail();
@@ -66,6 +66,8 @@ public class GroupActivity extends AppCompatActivity {
                 // Check if the checkbox is checked
                 if (checkBox.isChecked()) {
                     group_type = 1;
+                }else {
+                    group_type = 2;
                 }
 
                 // Verify if the fields aren't empty
@@ -80,7 +82,7 @@ public class GroupActivity extends AppCompatActivity {
                     dialog.show();
                 } else {
                     // check if the group already exists
-                    if(databaseHelper.doesGroupExist(name)){
+                    if(databaseHelper.getGroupbyName(name) != null){
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("This group already exists")
                                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -96,7 +98,7 @@ public class GroupActivity extends AppCompatActivity {
                         databaseHelper.insertGroup(group);
 
                         // Verify is the group is created in the database
-                        if (databaseHelper.doesGroupExist(name)) {
+                        if (databaseHelper.getGroupbyName(name) != null) {
                             // Group created
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
                             builder.setMessage("Group created")

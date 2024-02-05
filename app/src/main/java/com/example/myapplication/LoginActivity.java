@@ -43,13 +43,14 @@ public class LoginActivity extends AppCompatActivity {
 
         appBarText.setText("Login");
 
-        //Click listener fir the "Back" button
+        //Click listener for the "Back" button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(LoginActivity.this, MainActivity.class));
             }
         });
+
 
         Context context = this;
         buttonLogin.setOnClickListener(new View.OnClickListener() {
