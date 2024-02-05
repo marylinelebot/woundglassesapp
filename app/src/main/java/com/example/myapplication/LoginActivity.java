@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private SessionManager sessionManager;
+    private Button back;
+    private TextView appBarText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,19 @@ public class LoginActivity extends AppCompatActivity {
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
         buttonSignup = findViewById(R.id.buttonSignup);
+        appBarText = findViewById(R.id.name_activity);
+        back = findViewById(R.id.button_back);
+
+        appBarText.setText("Login");
+
+        //Click listener fir the "Back" button
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            }
+        });
+
 
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override

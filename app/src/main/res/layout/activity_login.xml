@@ -5,14 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context="com.example.myapplication.LoginActivity">
+
+    <include
+        android:id="@+id/app_bar_activity"
+        layout="@layout/app_bar_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
+        android:padding="16dp"
         android:inputType="textEmailAddress"
         android:layout_marginBottom="16dp"/>
 
@@ -21,19 +27,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
+        android:padding="16dp"
         android:inputType="textPassword"
         android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Log in"/>
 
     <Button
         android:id="@+id/buttonSignup"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Sign up"/>
 
 </LinearLayout>

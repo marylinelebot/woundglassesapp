@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,8 @@ public class SignUpActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private SessionManager sessionManager;
+    private Button back;
+    private TextView appBarText;
 
 
     @Override
@@ -41,6 +44,18 @@ public class SignUpActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonSignUp = findViewById(R.id.buttonSignUp);
+        appBarText = findViewById(R.id.name_activity);
+        back = findViewById(R.id.button_back);
+
+        appBarText.setText("Sign up");
+
+        //Click listener fir the "Back" button
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
+            }
+        });
 
         // Create a user
         buttonSignUp.setOnClickListener(new View.OnClickListener() {

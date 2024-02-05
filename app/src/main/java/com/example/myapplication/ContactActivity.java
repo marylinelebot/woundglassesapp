@@ -9,6 +9,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +28,8 @@ public class ContactActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private ArrayList<String> searchResults;
     protected DatabaseHelper dbHelper;
+    private Button back;
+    private TextView appBarText;
 
 
     @Override
@@ -38,6 +41,18 @@ public class ContactActivity extends AppCompatActivity {
         // Initialize UI components
         searchEditText = findViewById(R.id.searchEditText);
         searchResultsListView = findViewById(R.id.searchResultsListView);
+        appBarText = findViewById(R.id.name_activity);
+        back = findViewById(R.id.button_back);
+
+        appBarText.setText("Add Contacts");
+
+        //Click listener fir the "Back" button
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ContactActivity.this, MainActivity.class));
+            }
+        });
 
         // Initialize database
         dbHelper = new DatabaseHelper(this);

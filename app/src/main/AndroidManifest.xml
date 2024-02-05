@@ -23,11 +23,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".SignUpActivity"></activity>
-        <activity android:name=".ContactActivity"></activity>
-        <activity android:name=".EditUserActivity"></activity>
-        <activity android:name=".GroupActivity"></activity>
+        <activity android:name=".LoginActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+        <activity android:name=".SignUpActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+        <activity android:name=".ContactActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+        <activity android:name=".EditUserActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
+        <activity android:name=".GroupActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar"></activity>
     </application>
 
 </manifest>

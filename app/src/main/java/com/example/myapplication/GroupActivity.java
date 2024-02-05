@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,8 @@ public class GroupActivity extends AppCompatActivity {
     private DatabaseHelper databaseHelper;
     private SessionManager sessionManager;
     private int group_type;
+    private Button back;
+    private TextView appBarText;
 
 
     @Override
@@ -38,6 +41,20 @@ public class GroupActivity extends AppCompatActivity {
         editTextName = findViewById(R.id.editTextName);
         checkBox = findViewById(R.id.myCheckbox);
         buttonCreate = findViewById(R.id.buttonCreate);
+        appBarText = findViewById(R.id.name_activity);
+        back = findViewById(R.id.button_back);
+
+        appBarText.setText("Create a group");
+
+        //Click listener fir the "Back" button
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(GroupActivity.this, MainActivity.class));
+            }
+        });
+
+
         String email = sessionManager.getUserEmail();
         // Create a group
         buttonCreate.setOnClickListener(new View.OnClickListener() {
