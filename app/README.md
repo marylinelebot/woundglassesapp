@@ -40,7 +40,7 @@ Wounds management glasses application
     Select the "Individual group" option if needed
     Click on the create button
 
-8 - See your list of contacts
+8 - See your list of groups
 
     Go in the menu by clicking on the top left corner
     Click on Groups
