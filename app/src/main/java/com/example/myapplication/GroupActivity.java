@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,14 +9,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.ui.database.DatabaseHelper;
 import com.example.myapplication.ui.database.classes.Group;
-import com.example.myapplication.ui.database.classes.User;
-import com.google.android.material.snackbar.Snackbar;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -54,7 +54,7 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-
+        Context context = this;
         String email = sessionManager.getUserEmail();
         // Create a group
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -70,13 +70,26 @@ public class GroupActivity extends AppCompatActivity {
 
                 // Verify if the fields aren't empty
                 if (name.isEmpty()) {
-                    Snackbar.make(v, "Please enter a name", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Please enter a name")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
                     // check if the group already exists
                     if(databaseHelper.doesGroupExist(name)){
-                        Snackbar.make(v, "This group already exists", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("This group already exists")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
                     } else {
                         // Create a group in the database
                         Group group = new Group(name, email, group_type);
@@ -84,15 +97,29 @@ public class GroupActivity extends AppCompatActivity {
 
                         // Verify is the group is created in the database
                         if (databaseHelper.doesGroupExist(name)) {
-                            // Account created
-                            Snackbar.make(v, "Group created", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                            startActivity(new Intent(GroupActivity.this, MainActivity.class));
+                            // Group created
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Group created")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            startActivity(new Intent(GroupActivity.this, MainActivity.class));
+                                        }
+                                    });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
                         } else {
-                            // Account failed to create
-                            Snackbar.make(v, "Group failed to create", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                            startActivity(new Intent(GroupActivity.this, MainActivity.class));
+                            // Group failed to create
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setMessage("Group failed to create")
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            startActivity(new Intent(GroupActivity.this, MainActivity.class));
+                                        }
+                                    });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+
                         }
                     }
 

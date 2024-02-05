@@ -1,17 +1,19 @@
 package com.example.myapplication;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.ui.database.DatabaseHelper;
-import com.google.android.material.snackbar.Snackbar;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -49,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
+        Context context = this;
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,19 +61,32 @@ public class LoginActivity extends AppCompatActivity {
                 // check if the user is in the database
                 if (databaseHelper.checkUser(email, password)) {
                     // Success of the connection
-                    Snackbar.make(v, "Success of the connection", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    //Toast.makeText(LoginActivity.this, "Success of the connection", Toast.LENGTH_SHORT).show();
-                    sessionManager.setLoggedIn(true);
-                    sessionManager.setUserEmail(email);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Sucess of the connection")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    sessionManager.setLoggedIn(true);
+                                    sessionManager.setUserEmail(email);
 
-                    // Redirect to MainActivity
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    // Redirect to MainActivity
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+
+
                 } else {
 
                     // Connection failed
-                    Snackbar.make(v, "Connection failed.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("Connection failed")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
         });
