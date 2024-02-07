@@ -25,12 +25,10 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         void onItemClick(Group group);
     }
 
-
     public GroupAdapter(List<Group> groups, OnItemClickListener listener) {
         this.groups = groups;
         this.listener = listener;
     }
-
 
     // ViewHolder class
     public class ViewHolder extends RecyclerView.ViewHolder {

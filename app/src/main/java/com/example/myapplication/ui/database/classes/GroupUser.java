@@ -2,13 +2,13 @@ package com.example.myapplication.ui.database.classes;
 
 public class GroupUser {
     private String userEmail;
-    private int groupTypeId;
+    private String groupName;
 
 
     // Constructor, getters et setters
-    public GroupUser(String userEmail, int groupTypeId) {
+    public GroupUser(String userEmail, String groupName) {
         this.userEmail = userEmail;
-        this.groupTypeId = groupTypeId;
+        this.groupName = groupName;
     }
 
     public String getUserEmail() {
@@ -19,11 +19,11 @@ public class GroupUser {
         this.userEmail = userEmail;
     }
 
-    public int getGroupTypeId() {
-        return groupTypeId;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public void setGroupTypeId(int groupTypeId) {
-        this.groupTypeId = groupTypeId;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

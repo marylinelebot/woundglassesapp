@@ -25,23 +25,7 @@ public class User {
         this.serialNumber = serialNumber;
     }
 
-    public User(String surname, String name, String email, String pwd) {
-        this.surname = surname;
-        this.name = name;
-        this.email = email;
-        this.pwd = pwd;
-    }
     public User() {
-
-    }
-
-    public User(int id, String name, String surname, String email, String pwd, int statusId) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.pwd = pwd;
-        this.statusId = statusId;
     }
 
     public int getId() {

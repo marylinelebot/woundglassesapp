@@ -14,16 +14,16 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.ui.database.DatabaseHelper;
+import com.example.myapplication.ui.database.classes.User;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword;
-    private Button buttonLogin, buttonSignup;
-
+    private Button buttonLogin, buttonSignup, back;
     private DatabaseHelper databaseHelper;
     private SessionManager sessionManager;
-    private Button back;
     private TextView appBarText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(this);
         sessionManager = new SessionManager(this);
+        Context context = this;
 
         //Login fields
         editTextEmail = findViewById(R.id.editTextEmail);
@@ -52,36 +53,48 @@ public class LoginActivity extends AppCompatActivity {
         });
 
 
-        Context context = this;
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
+                User user = databaseHelper.getUserbyEmail(email);
 
                 // check if the user is in the database
-                if (databaseHelper.checkUser(email, password)) {
-                    // Success of the connection
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Sucess of the connection")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    sessionManager.setLoggedIn(true);
-                                    sessionManager.setUserEmail(email);
+                if (user != null) {
+                    if(password.equals(user.getPwd())) {
+                        // Success of the connection
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("Sucess of the connection")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        sessionManager.setLoggedIn(true);
+                                        sessionManager.setUserEmail(email);
 
-                                    // Redirect to MainActivity
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                                }
-                            });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                                        // Redirect to MainActivity
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
 
+                    } else {
+                        // Connection failed
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setMessage("Incorrect password")
+                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
 
                 } else {
 
                     // Connection failed
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage("Connection failed")
+                    builder.setMessage("Incorrect email")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                 }

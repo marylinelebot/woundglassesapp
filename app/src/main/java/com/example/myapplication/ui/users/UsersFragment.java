@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.SessionManager;
-import com.example.myapplication.ui.database.UserDAO;
+import com.example.myapplication.ui.database.DatabaseHelper;
 import com.example.myapplication.ui.database.classes.User;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class UsersFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private UserAdapter userAdapter;
-    private UserDAO userDAO;
+    private DatabaseHelper databaseHelper;
 
 
     //get the contacts of a user from the database to print them on the screen
@@ -33,14 +33,12 @@ public class UsersFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         SessionManager sessionManager = new SessionManager(this.getActivity());
+        databaseHelper = new DatabaseHelper(getActivity());
 
         if (sessionManager.isLoggedIn()){
             String userEmail = sessionManager.getUserEmail();
 
-            userDAO = new UserDAO(getActivity());
-            userDAO.open();
-            List<User> users = userDAO.getContacts(userEmail);
-            userDAO.close();
+            List<User> users = databaseHelper.getContacts(userEmail);
 
             userAdapter = new UserAdapter(users);
             recyclerView.setAdapter(userAdapter);
@@ -48,6 +46,4 @@ public class UsersFragment extends Fragment {
 
         return view;
     }
-
-
 }

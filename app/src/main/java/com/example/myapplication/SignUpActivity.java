@@ -18,11 +18,9 @@ import com.example.myapplication.ui.database.classes.User;
 public class SignUpActivity extends AppCompatActivity {
 
     private EditText editTextName, editTextSurname, editTextEmail, editTextPassword;
-    private Button buttonSignUp;
-
+    private Button buttonSignUp, back;
     private DatabaseHelper databaseHelper;
     private SessionManager sessionManager;
-    private Button back;
     private TextView appBarText;
 
 
@@ -31,9 +29,8 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         sessionManager = new SessionManager(this);
-
         databaseHelper = new DatabaseHelper(this);
-
+        Context context = this;
 
         editTextSurname = findViewById(R.id.editTextSurname);
         editTextName = findViewById(R.id.editTextName);
@@ -45,14 +42,14 @@ public class SignUpActivity extends AppCompatActivity {
 
         appBarText.setText("Sign up");
 
-        //Click listener fir the "Back" button
+        //Click listener for the "Back" button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
             }
         });
-        Context context = this;
+
         // Create a user
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +79,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
                     // Verify is the account is created in the database
-                    if (databaseHelper.checkUser(email, password)) {
+                    if (databaseHelper.getUserbyEmail(email) != null) {
                         // Account created
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
                         builder.setMessage("Account created")

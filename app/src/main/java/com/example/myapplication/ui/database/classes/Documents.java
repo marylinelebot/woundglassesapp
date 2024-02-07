@@ -4,15 +4,15 @@ public class Documents {
     private int id;
     private String title;
     private String path;
-    private String informations;
+    private String information;
 
 
     // Constructor, getters et setters
-    public Documents(int id, String title, String path, String informations) {
+    public Documents(int id, String title, String path, String information) {
         this.id = id;
         this.title = title;
         this.path = path;
-        this.informations = informations;
+        this.information = information;
     }
 
     public Documents(int id, String title, String path) {
@@ -45,12 +45,12 @@ public class Documents {
         this.path = path;
     }
 
-    public String getInformations() {
-        return informations;
+    public String getInformation() {
+        return information;
     }
 
-    public void setInformations(String informations) {
-        this.informations = informations;
+    public void setInformation(String information) {
+        this.information = information;
     }
 }
 

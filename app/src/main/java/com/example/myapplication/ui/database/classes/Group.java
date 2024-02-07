@@ -12,6 +12,7 @@ public class Group {
         this.email = email;
         this.typeId = typeId;
     }
+
     public Group() {
     }
 

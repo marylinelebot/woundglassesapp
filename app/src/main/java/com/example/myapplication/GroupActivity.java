@@ -15,17 +15,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.ui.database.DatabaseHelper;
 import com.example.myapplication.ui.database.classes.Group;
+import com.example.myapplication.ui.database.classes.GroupUser;
 
 public class GroupActivity extends AppCompatActivity {
 
     private EditText editTextName;
-    private Button buttonCreate;
+    private Button buttonCreate, back;
     private CheckBox checkBox;
-
     private DatabaseHelper databaseHelper;
     private SessionManager sessionManager;
     private int group_type;
-    private Button back;
     private TextView appBarText;
 
 
@@ -33,8 +32,9 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-        sessionManager = new SessionManager(this);
+        Context context = this;
 
+        sessionManager = new SessionManager(this);
         databaseHelper = new DatabaseHelper(this);
 
         editTextName = findViewById(R.id.editTextName);
@@ -54,7 +54,6 @@ public class GroupActivity extends AppCompatActivity {
         });
 
 
-        Context context = this;
         String email = sessionManager.getUserEmail();
         // Create a group
         buttonCreate.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +95,8 @@ public class GroupActivity extends AppCompatActivity {
                         // Create a group in the database
                         Group group = new Group(name, email, group_type);
                         databaseHelper.insertGroup(group);
+                        GroupUser groupUser = new GroupUser(email, name);
+                        databaseHelper.insertGroupUser(groupUser);
 
                         // Verify is the group is created in the database
                         if (databaseHelper.getGroupbyName(name) != null) {
@@ -121,12 +122,9 @@ public class GroupActivity extends AppCompatActivity {
                                     });
                             AlertDialog dialog = builder.create();
                             dialog.show();
-
                         }
                     }
-
                 }
-
             }
         });
     }

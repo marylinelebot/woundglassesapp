@@ -46,13 +46,14 @@ public class ContactActivity extends AppCompatActivity {
 
         appBarText.setText("Add Contacts");
 
-        //Click listener fir the "Back" button
+        //Click listener for the "Back" button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ContactActivity.this, MainActivity.class));
             }
         });
+
 
         // Initialize database
         dbHelper = new DatabaseHelper(this);
@@ -100,7 +101,6 @@ public class ContactActivity extends AppCompatActivity {
 
     // search the users in the database while writing
     private void searchUser(String query) {
-        // Update ListView with search results
         searchResults = dbHelper.searchUsers(query);
         // Update ListView with search results
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, searchResults);

@@ -15,11 +15,11 @@ import com.example.myapplication.ui.database.classes.User;
 public class EditUserActivity extends AppCompatActivity {
 
     private EditText nameEditText, surnameEditText, emailEditText, passwordEditText, serialnumberEditText;
-    private Button saveButton;
+    private Button saveButton, back;
     private DatabaseHelper dbHelper;
     private User user;
-    private Button back;
     private TextView appBarText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class EditUserActivity extends AppCompatActivity {
 
         appBarText.setText("Edit User");
 
-        //Click listener fir the "Back" button
+        //Click listener for the "Back" button
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

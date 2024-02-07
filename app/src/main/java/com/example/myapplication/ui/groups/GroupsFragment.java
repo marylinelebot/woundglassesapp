@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.GroupItemActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.SessionManager;
-import com.example.myapplication.ui.database.GroupDAO;
+import com.example.myapplication.ui.database.DatabaseHelper;
 import com.example.myapplication.ui.database.classes.Group;
 
 import java.util.List;
@@ -23,8 +23,8 @@ public class GroupsFragment extends Fragment implements GroupAdapter.OnItemClick
 
     private RecyclerView recyclerView;
     private GroupAdapter groupAdapter;
-    private GroupDAO groupDAO;
     private SessionManager session;
+    private DatabaseHelper databaseHelper;
 
 
     @Override
@@ -33,20 +33,19 @@ public class GroupsFragment extends Fragment implements GroupAdapter.OnItemClick
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        SessionManager sessionManager = new SessionManager(this.getActivity());
+        SessionManager sessionManager = new SessionManager(getActivity());
+        databaseHelper = new DatabaseHelper(getActivity());
 
         if (sessionManager.isLoggedIn()) {
             String userEmail = sessionManager.getUserEmail();
 
-            groupDAO = new GroupDAO(getActivity());
-            groupDAO.open();
-            List<Group> groups = groupDAO.getGroups(userEmail);
-            groupDAO.close();
+            // Get the list of groups
+            List<Group> groups = databaseHelper.getGroups(userEmail);
 
-            groupAdapter = new GroupAdapter(groups, this); // Pass the click listener
+            // Print the list
+            groupAdapter = new GroupAdapter(groups, this);
             recyclerView.setAdapter(groupAdapter);
         }
-
         return view;
     }
 
