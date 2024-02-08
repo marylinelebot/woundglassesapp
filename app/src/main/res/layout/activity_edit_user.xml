@@ -14,50 +14,40 @@
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Name"
-        android:layout_below="@id/app_bar_activity"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_below="@id/app_bar_activity" />
 
     <EditText
         android:id="@+id/surnameEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Surname"
-        android:layout_below="@id/nameEditText"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_below="@id/nameEditText" />
 
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Email"
         android:layout_below="@id/surnameEditText"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"
         android:inputType="textEmailAddress"
         android:enabled="false"/> <!-- Disable editing of email -->
 
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Password"
         android:layout_below="@id/emailEditText"
-        android:padding="16dp"
-        android:inputType="textPassword"
-        android:layout_marginBottom="16dp"/>
+        android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/serialnumberEditText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Serial Number"
-        android:layout_below="@id/passwordEditText"
-        android:padding="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_below="@id/passwordEditText" />
 
     <Button
         android:id="@+id/saveButton"

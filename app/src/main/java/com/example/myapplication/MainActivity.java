@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow, R.id.nav_users, R.id.nav_groups)
+                R.id.nav_home, R.id.nav_gallery, R.id.nav_users, R.id.nav_groups)
                 .setOpenableLayout(drawer)
                 .build();
 
@@ -193,9 +193,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void moveButtonsUp() {
-        moveButton(fab1, 0f, -200f);
-        moveButton(fab2, 0f, -400f);
-        moveButton(fab3, 0f, -600f);
+        moveButton(fab1, 0f, -58f);
+        moveButton(fab2, 0f, -116f);
+        moveButton(fab3, 0f, -174f);
     }
 
     private void moveButtonsDown() {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MenuItemStyle" parent="@android:style/Widget.Material.Light.PopupMenu">
+        <item name="android:layout_height">10dp</item> <!-- Set the desired height here -->
+    </style>
+</resources>
