@@ -532,6 +532,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return groups;
     }
 
+    // Verify if the contact already exist in the database
+    public boolean memberExists(String namegroup, String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_GROUPUSER + " WHERE (" + COL_NAME + " = ? AND " + COL_EMAIL + " = ?)";
+        Cursor cursor = null;
+        boolean exists = false;
+
+        try {
+            cursor = db.rawQuery(query, new String[]{namegroup, email});
+            if (cursor != null && cursor.getCount() > 0) {
+                exists = cursor.moveToFirst();
+            }
+
+        } catch (Exception e) {
+            Log.e("TAG", "Error checking if contact exists: " + e.getMessage());
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return exists;
+    }
 
 }
 

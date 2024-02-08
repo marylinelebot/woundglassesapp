@@ -135,8 +135,20 @@ public class GroupItemActivity extends AppCompatActivity {
                             Snackbar.make(view, "This contact already exists", Snackbar.LENGTH_LONG)
                                     .setAction("Action", null).show();
                         } else {
-                            GroupUser groupUser = new GroupUser(selectedUser, group.getName());
-                            databaseHelper.insertGroupUser(groupUser);;
+
+                            //Verify if the member already exists
+                            boolean member_exists = databaseHelper.memberExists(group.getName(), selectedUser);
+
+                            // Check if the contact already exists
+                            if (member_exists) {
+                                Snackbar.make(view, "This member already exists", Snackbar.LENGTH_LONG)
+                                        .setAction("Action", null).show();
+                            } else {
+                                // Add the member if it doesn't already exist
+                                GroupUser groupUser = new GroupUser(selectedUser, group.getName());
+                                databaseHelper.insertGroupUser(groupUser);
+                                startActivity(new Intent(GroupItemActivity.this, GroupItemActivity.class));
+                            }
                         }
                     }
                 });
