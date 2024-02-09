@@ -17,7 +17,7 @@ https://github.com/marylinelebot/woundglassesapp
         * On the top of the screen, select the API you just created and run the app
 
 
-Wounds management glasses application utilisation
+Wounds management glasses application utilisation 
 
 1 - Create an account
 
