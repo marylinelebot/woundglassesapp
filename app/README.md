@@ -1,4 +1,23 @@
-Wounds management glasses application
+Wounds management glasses application installation
+
+1 - Download the project on the following GitHub link:
+https://github.com/marylinelebot/woundglassesapp
+
+2 - Open the project in your IDE
+
+3 - Run the app
+    - Android Studio:
+        * Download the file to visualize the application in a Vuzix screen in the following link : 
+        https://intercom.help/vuzix/en/articles/5953351-emulating-in-android-studio
+        Click right on M400 and Save as...
+        * Click on "Device Manager" button on the right and then on the + (Create Virtual Device)
+        * Click on "Import Hardware Profile", select the M400 file and click "OK"
+        * In the search bare, type "M400", select it when it appears and click "Next"
+        * Download "R", click "Next" and then "Finish"
+        * On the top of the screen, select the API you just created and run the app
+
+
+Wounds management glasses application utilisation
 
 1 - Create an account
 
