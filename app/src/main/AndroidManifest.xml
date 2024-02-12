@@ -57,6 +57,11 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.MyApplication.NoActionBar" />
+        <activity
+            android:name=".AugmentedRealityActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.MyApplication.NoActionBar" />
     </application>
 
 </manifest>

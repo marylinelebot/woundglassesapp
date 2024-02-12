@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/end_call"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/phone_hangup"
+        android:background="@drawable/rounded_left_corners"
+        app:tint="@color/white"
+        android:padding="7dp"
+
+        android:layout_marginRight="3dp"/>
+
+    <ImageButton
+        android:id="@+id/mute_mic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/unmute_mic"
+        android:background="@color/white"
+        app:tint="@color/teal_200"
+        android:padding="7dp"
+        android:layout_marginRight="3dp"/>
+
+    <ImageButton
+        android:id="@+id/remote_flashlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/flash"
+        android:background="@color/white"
+        app:tint="@color/teal_200"
+        android:padding="7dp"
+        android:layout_marginRight="3dp"/>
+
+    <ImageButton
+        android:id="@+id/freeze"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camera"
+        android:background="@color/white"
+        app:tint="@color/teal_200"
+        android:padding="7dp"
+        android:layout_marginRight="3dp"/>
+
+    <ImageButton
+        android:id="@+id/screen_sharing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/share_screen"
+        android:background="@color/white"
+        app:tint="@color/teal_200"
+        android:padding="7dp"
+        android:layout_marginRight="3dp"/>
+
+    <ImageButton
+        android:id="@+id/stream_recording"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/recording"
+        android:background="@color/white"
+        app:tint="@color/teal_200"
+        android:padding="7dp"
+        android:layout_marginRight="3dp"/>
+
+    <ImageButton
+        android:id="@+id/take_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/phone_hangup"
+        android:background="@color/white"
+        app:tint="@color/teal_200"
+        android:padding="7dp"
+        android:layout_marginRight="3dp"/>
+
+    <ImageButton
+        android:id="@+id/digital_zoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/zoom"
+        android:background="@drawable/rounded_right_corners"
+        app:tint="@color/teal_200"
+        android:padding="7dp"
+        android:layout_marginRight="3dp"/>
+
+
+
+</LinearLayout>

@@ -82,3 +82,8 @@ Wounds management glasses application utilisation
 
         In the group details section, click on the "Update group" button
         Change it to "Individual group" or "Non-individual group"
+
+13 - Call someone
+
+    Click on the "+" button on the bottom right corner and the button with a phone
+    

@@ -123,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
             binding.appBarMain.fab3.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Call", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    startActivity(new Intent(MainActivity.this, AugmentedRealityActivity.class));
                 }
             });
 

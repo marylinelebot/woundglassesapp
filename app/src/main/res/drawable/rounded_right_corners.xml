@@ -1,0 +1,7 @@
+<!-- rounded_left_corners.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:bottomRightRadius="100dp"
+        android:topRightRadius="100dp"/>
+    <solid android:color="@color/white" />
+</shape>
