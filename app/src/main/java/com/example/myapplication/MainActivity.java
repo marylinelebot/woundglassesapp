@@ -101,6 +101,61 @@ public class MainActivity extends AppCompatActivity {
             });
 
 
+            //Add contact button
+            binding.appBarMain.fab1.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(MainActivity.this, ContactActivity.class));
+                }
+
+            });
+
+            //Add group button
+            binding.appBarMain.fab2.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(MainActivity.this, GroupActivity.class));
+                }
+
+            });
+
+            //Video call button
+            binding.appBarMain.fab3.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Call", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+
+            //Rotating menu button
+            binding.appBarMain.fab.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    rotateImage();
+                    if (areButtonsUp) {
+                        moveButtonsDown();
+                    } else {
+                        moveButtonsUp();
+                    }
+                    areButtonsUp = !areButtonsUp;
+                }
+            });
+
+            //Menu
+            DrawerLayout drawer = binding.drawerLayout;
+
+            // Passing each menu ID as a set of Ids because each
+            // menu should be considered as top level destinations.
+            mAppBarConfiguration = new AppBarConfiguration.Builder(
+                    R.id.nav_home, R.id.nav_gallery, R.id.nav_users, R.id.nav_groups)
+                    .setOpenableLayout(drawer)
+                    .build();
+
+            NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+            NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+            NavigationUI.setupWithNavController(navigationView, navController);
+
         } else {
             Log.d("Session", "User not connected");
             buttonLogIn.setVisibility(View.VISIBLE);
@@ -108,46 +163,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        //Rotating menu button
-        binding.appBarMain.fab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                rotateImage();
-                if (areButtonsUp) {
-                    moveButtonsDown();
-                } else {
-                    moveButtonsUp();
-                }
-                areButtonsUp = !areButtonsUp;
-            }
-        });
-
-        //Add contact button
-        binding.appBarMain.fab1.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ContactActivity.class));
-            }
-
-        });
-
-        //Add group button
-        binding.appBarMain.fab2.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, GroupActivity.class));
-            }
-
-        });
-
-        //Video call button
-        binding.appBarMain.fab3.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Call", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
 
         //Login or Logout button action
@@ -168,20 +183,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        //Menu
-        DrawerLayout drawer = binding.drawerLayout;
-
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_users, R.id.nav_groups)
-                .setOpenableLayout(drawer)
-                .build();
-
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
 
     }
 

@@ -32,8 +32,8 @@ public class SignUpActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         Context context = this;
 
-        editTextSurname = findViewById(R.id.editTextSurname);
         editTextName = findViewById(R.id.editTextName);
+        editTextSurname = findViewById(R.id.editTextSurname);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonSignUp = findViewById(R.id.buttonSignUp);
@@ -55,13 +55,13 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get the values
-                String surname = editTextSurname.getText().toString().trim();
                 String name = editTextName.getText().toString().trim();
+                String surname = editTextSurname.getText().toString().trim();
                 String email = editTextEmail.getText().toString().trim();
                 String password = editTextPassword.getText().toString().trim();
 
                 // Verify if the fields aren't empty
-                if (surname.isEmpty() || name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                if ( name.isEmpty() || surname.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("Please complete all the fields")
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -74,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 } else {
                     // Create a user in the database
-                    User userId = new User(surname, name, 0, 0, email, password, 2, null);
+                    User userId = new User(name, surname, 0, 0, email, password, 2, null);
                     databaseHelper.insertUser(userId);
 
 

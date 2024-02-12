@@ -1,10 +1,9 @@
 package com.example.myapplication;
 
 
-import static android.app.PendingIntent.getActivity;
-
 import static java.sql.DriverManager.println;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -175,11 +174,7 @@ public class GroupItemActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Inflate the layout for the popup
-                View popupView = LayoutInflater.from(context).inflate(R.layout.show_members_popup, null);
-
-                // Initialize UI components from the popup layout
-                name = popupView.findViewById(R.id.nameTextView);
-                surname = popupView.findViewById(R.id.surnameTextView);
+                @SuppressLint("InflateParams") View popupView = LayoutInflater.from(context).inflate(R.layout.show_members_popup, null);
 
                 recyclerView2 = popupView.findViewById(R.id.recyclerView);
                 recyclerView2.setLayoutManager(new LinearLayoutManager(context));
